@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYEvents</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        *{
+            border: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-image: linear-gradient(to left, rgba(255, 51, 0), rgb(141, 50, 226));
+        }
+        #logOutBtn{
+            margin-left: 5px;
+            padding: 5px 7px;
+            border: 1px solid red;
+            color: white;
+            background-color: red;
+            border-radius: 15px;
+            display: none;
+        }
+        .eventDiv{
+            padding:30px;
+            margin: 50px auto;
+            background-color: aliceblue;
+            border:1px solid aliceblue; 
+            box-shadow: 0px 0px 15px aliceblue;
+            border-radius: 20px;
+            width: 70%;
+        }
+        .eventDiv img{
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 1px 1px 5px blueviolet;
+        }
+        .eventDiv h1, p {
+            margin: 5px 0px;
+        }
+        #bookEvent{
+            display: block;
+            margin: 20px auto;
+            padding: 5px 10px;
+            color: rgb(14, 95, 57);
+            border: 1px solid rgb(14, 95, 57);
+            border-radius: 15px;
+        }
+        #bookEvent:hover{
+            background-color: rgb(14, 95, 57);
+            color: aliceblue;
+        }
+        .displaySearch{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 10px;
+        }
+        .searchEventDiv{
+            padding:20px;
+            margin: 10px;
+            background-color: aliceblue;
+            border:1px solid aliceblue; 
+            box-shadow: 0px 0px 15px aliceblue;
+            border-radius: 15px; 
+            width: 45%;
+        }
+        .searchEventDiv img{
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 1px 1px 5px blueviolet;
+        }
+        .searchEventDiv h1,p{
+            display: inline;
+        }
+        .searchEventDiv a{
+            display: inline-block;
+            margin: 10px auto;
+            text-decoration: none;
+            color: rgb(14, 95, 57);
+            border: 1px solid rgb(14, 95, 57);
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+        .searchEventDiv a:hover{
+            background-color: rgb(14, 95, 57);
+            color: aliceblue;
+        }
+        #navBooked{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand bg-body-tertiary sticky-top">
+            <div class="container-fluid d-flex">
+                <a class="navbar-brand" href="./index.html">AYEvents</a>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                    <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./createEvent.html">Create Events</a>
+                        </li>
+                        <li class="nav-item" id="navBooked">
+                            <a class="nav-link" href="#">Booked Events</a>
+                        </li>
+                        <li class="nav-item d-flex">
+                            <input class="form-control me-2" id="searchEvent" type="search" placeholder="Search Event">
+                            <button class="btn btn-outline-success" id="searchBtn" >Search</button>
+                        </li>
+                    </ul>
+                <div class="d-flex">
+                    <div class="userDisplay"></div>
+                    <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                        <li class="nav-item" >
+                            <a class="nav-link" id="navSignUp" href="./signUp.html">Sign Up</a>
+                        </li>
+                        <li class="nav-item" >
+                        <a class="nav-link" id="navSignIn" href="./login.html">Login</a>
+                        </li>
+                    </ul>
+                    <button id="logOutBtn" type="button">Log Out</button>
+                </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="display"></div>
+        <div class="displaySearch"></div>
+    </main>
+
+    
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, addDoc , getDocs} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyBvdbSCTrzNrYxDJBi11soXSP2HEYO685c",
+        authDomain: "proeventsqi.firebaseapp.com",
+        projectId: "proeventsqi",
+        storageBucket: "proeventsqi.firebasestorage.app",
+        messagingSenderId: "443114245102",
+        appId: "1:443114245102:web:65474743165e222fb71cff",
+        measurementId: "G-C3LMGJVXW2"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const colRef = collection(db, 'bookedEvents');
+    const eventColRef = collection(db, 'events');
+    const urlParams = new URLSearchParams(window.location.search.substring(1));
+    const eventId = urlParams.get('id');
+    let docRef = doc(db, 'events', eventId);
+
+    const auth = getAuth(app);
+    const userColRef = collection(db, 'userDetails');
+    const allUsers = [];
+    const allEvents =[];
+    const logOutBtn = document.getElementById('logOutBtn');
+    let display = document.querySelector('.display');
+    let displaySearch = document.querySelector('.displaySearch');
+    let currentUser= '';
+
+    async function getAllUsers(){
+        try {
+            const querySnapShot = await getDocs(userColRef);
+            querySnapShot.forEach((doc) => {
+                const data = {id: doc.id, ...doc.data()};
+                allUsers.push(data);
+            })
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+    getAllUsers()
+
+    onAuthStateChanged(auth, async (user) => {
+    const navSignUp = document.getElementById('navSignUp');
+    const navSignIn = document.getElementById('navSignIn');
+    const navBooked = document.getElementById('navBooked');
+    const userDisplay = document.querySelector('.userDisplay');
+    if (user && user.email) {
+        currentUser = user.uid;
+        const userEmail = user.email.trim().toLowerCase();
+        if (allUsers.length === 0) {
+            await getAllUsers();
+        }
+        const loggedInUser = allUsers.filter((u) => u.email && u.email.trim().toLowerCase() === userEmail);
+        if (loggedInUser.length > 0) {
+            const name = loggedInUser[0].firstname;
+            const image = loggedInUser[0].image;
+            
+            userDisplay.innerHTML =`
+                <span class="navbar-brand mb-0 ">${name}</span>
+                <img src="${image}" alt="Bootstrap" width="50" height="50" style="border-radius: 50%;">
+            `;
+            logOutBtn.style.display = 'block';
+            navSignUp.style.display = 'none';
+            navSignIn.style.display = 'none';
+            navBooked.style.display = 'block';
+        } else {
+            console.warn("User is authenticated but not found in the 'users' collection.");
+        }
+    } else {
+        logOutBtn.style.display = 'none';
+        navSignUp.style.display = 'block';
+        navSignIn.style.display = 'block';
+        navBooked.style.display = 'none';
+    }
+    });
+
+    logOutBtn.addEventListener('click', async() => {
+        try {
+            await signOut(auth);
+
+            alert(`Logout successful`);
+            window.location.href = './index.html';
+            
+        } catch (error) {
+            console.log(error.message);
+            
+        }
+    })
+
+
+
+
+    async function getSingleEvent(){
+        if (!docRef) {
+        alert("no blogid");
+        return;
+        }
+        try {
+            const docSnapShot = await getDoc(docRef);
+            const data = docSnapShot.data();
+            const event = {id: docSnapShot.id, ...data};
+            displayEvent(event);
+        } catch (error) {
+            console.log(error);
+            
+        }
+    };
+
+
+
+    function displayEvent(eve) {
+        displaySearch.innerHTML = '';  
+        display.innerHTML = '';
+        const priceEve = eve.price === 0 ? "Free" : "₦" + eve.price;
+        const dateEve = new Date(eve.date).toDateString();
+            display.innerHTML +=`
+            <div class="eventDiv">
+                <img src="${eve.image}" alt="NO IMAGE">
+                <h1>${eve.title}</h1>
+                <br>
+                <p><strong>Category:</strong> ${eve.category}</p>
+                <br>
+                <p><strong>Location:</strong> ${eve.location}</p>
+                <br>
+                <p><strong>Date:</strong> ${dateEve}</p>
+                <br>
+                <p><strong>Time:</strong> ${eve.time}</p>
+                <br>
+                <p><strong>Description:</strong> ${eve.description}</p>
+                <br>
+                <p><strong>Organizer:</strong> ${eve.organizer}</p>
+                <br>
+                <p><strong>Capacity:</strong> ${eve.capacity}</p>
+                <br>
+                <p><strong>Price:</strong> ${priceEve}</p>
+                <br>
+                <button id="bookEvent">Book Event</button>
+            </div>
+            `
+        let bookEvent = document.getElementById('bookEvent');
+        bookEvent.addEventListener('click', ()=>{
+            if(currentUser){
+                addBookedEvent(eve);
+            }else{
+                alert('Kindly Login to Book Event');
+                window.location.href = './login.html';
+            }
+        });
+        
+    }
+
+
+    async function addBookedEvent(addEvent){
+        let eventData = {
+            title: addEvent.title,
+            category: addEvent.category,
+            location: addEvent.location,
+            date: addEvent.date,
+            time: addEvent.time,
+            userUID: currentUser,
+        };
+        try {
+            const dcRef = await addDoc(colRef, eventData);
+            alert('Event Booked');
+            window.location.href = './bookedEvents.html';
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    getSingleEvent();
+
+
+// This is to display any Searched Event using the search button
+    async function getAllEvents(){
+        try {
+            const querySnapShot = await getDocs(eventColRef);
+            querySnapShot.forEach((doc)=>{
+                const data = {id: doc.id, ...doc.data()}
+                allEvents.push(data);
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    getAllEvents();
+    function displayAllEvents(e) {
+        displaySearch.innerHTML = '';  
+        display.innerHTML = '';  
+
+        e.forEach((event)=>{
+            displaySearch.innerHTML +=`
+            <div class="searchEventDiv">
+                <img src="${event.image}" alt="Image">
+                <br>
+                <h1>${event.title}</h1>
+                <br>
+                <p><strong>Location:</strong> ${event.location}</p>
+                <br>
+                <p><strong>Date:</strong> ${event.date}</p>
+                <br>
+                <p><strong>Time:</strong> ${event.time}</p>
+                <br>
+                <a href="./singleEvent.html?id=${event.id}">View More</a>
+            </div>
+            `
+        });
+    };
+
+    const searchBtn = document.getElementById('searchBtn')
+    searchBtn.addEventListener('click', ()=>{
+        const searchEvent = document.getElementById('searchEvent').value.trim().toLowerCase();
+        const searchedEvents = allEvents.filter((event)=> event.title.toLowerCase().trim().includes(searchEvent));
+
+        if(searchedEvents.length > 0){
+            displayAllEvents(searchedEvents);
+        }else{
+            alert('Ooops!!! Event Not Found');
+        }
+    })
+
+
+    
+</script>
+
+</html>

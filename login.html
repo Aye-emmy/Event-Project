@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AYEvents</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <style>
+        *{
+            border: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-image: linear-gradient(to left, rgba(255, 51, 0), rgb(141, 50, 226));
+        }
+        #logOutBtn{
+            margin-left: 5px;
+            padding: 5px 7px;
+            border: 1px solid red;
+            color: white;
+            background-color: red;
+            border-radius: 15px;
+            display: none;
+        }
+        .login{
+            margin: 30px auto;
+            padding: 10px;
+            width: 50%;
+            border:1px solid rgb(207,226,255); 
+            box-shadow: 0px 0px 15px aliceblue;
+            border-radius: 15px;
+        }
+        .login h1{
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login button{
+            display: block;
+            margin: 20px auto;
+            padding: 5px 10px;
+            color: rgb(14, 95, 57);
+            border: 1px solid rgb(14, 95, 57);
+            border-radius: 15px;
+        }
+        .login button:hover{
+            background-color: rgb(14, 95, 57);
+            color: aliceblue;
+        }
+        .displaySearch{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 10px;
+        }
+        .searchEventDiv{
+            padding:20px;
+            margin: 10px;
+            background-color: aliceblue;
+            border:1px solid aliceblue; 
+            box-shadow: 0px 0px 15px aliceblue;
+            border-radius: 15px; 
+            width: 45%;
+        }
+        .searchEventDiv img{
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 1px 1px 5px blueviolet;
+        }
+        .searchEventDiv h1,p{
+            display: inline;
+        }
+        .searchEventDiv a{
+            display: inline-block;
+            margin: 10px auto;
+            text-decoration: none;
+            color: rgb(14, 95, 57);
+            border: 1px solid rgb(14, 95, 57);
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+        .searchEventDiv a:hover{
+            background-color: rgb(14, 95, 57);
+            color: aliceblue;
+        }
+        #navBooked{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand bg-body-tertiary sticky-top">
+            <div class="container-fluid d-flex">
+                <a class="navbar-brand" href="./index.html">AYEvents</a>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                    <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./createEvent.html">Create Events</a>
+                        </li>
+                        <li class="nav-item" id="navBooked">
+                            <a class="nav-link" href="#">Booked Events</a>
+                        </li>
+                        <li class="nav-item d-flex">
+                            <input class="form-control me-2" id="searchEvent" type="search" placeholder="Search Event">
+                            <button class="btn btn-outline-success" id="searchBtn" >Search</button>
+                        </li>
+                    </ul>
+                <div class="d-flex">
+                    <div class="userDisplay"></div>
+                    <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                        <li class="nav-item" >
+                            <a class="nav-link" id="navSignUp" href="./signUp.html">Sign Up</a>
+                        </li>
+                        <li class="nav-item" >
+                        <a class="nav-link" id="navSignIn" href="./login.html">Login</a>
+                        </li>
+                    </ul>
+                    <button id="logOutBtn" type="button">Log Out</button>
+                </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <form class="container p-5 bg-primary-subtle login">
+            <h1>Login</h1>
+            <div class="mb-3">
+                <input type="email" class="form-control" name="email" placeholder="Email Address">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+            <div id="loginText" class="form-text text-danger mb-3"></div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="displaySearch"></div>
+    </main>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyBvdbSCTrzNrYxDJBi11soXSP2HEYO685c",
+        authDomain: "proeventsqi.firebaseapp.com",
+        projectId: "proeventsqi",
+        storageBucket: "proeventsqi.firebasestorage.app",
+        messagingSenderId: "443114245102",
+        appId: "1:443114245102:web:65474743165e222fb71cff",
+        measurementId: "G-C3LMGJVXW2"
+    }; 
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const colRef = collection(db, 'events');
+    const allEvents = [];
+    const loginForm = document.querySelector('.login');
+
+    onAuthStateChanged(auth, (user) =>{
+        if(user && user.email){
+            // alert('User Currently Logged In');
+            window.location.href ='./index.html';
+        }else{
+        }
+    })
+
+    loginForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        let email = loginForm.email.value;
+        let password = loginForm.password.value;
+        try {
+            const userResponse = await signInWithEmailAndPassword(auth, email, password);
+            alert(`Login Successfully`);
+            window.location.href = './index.html';
+        } catch (error) {
+            console.log(error.message);
+            if (error.message === 'Firebase: Error (auth/invalid-credential).'){
+                document.getElementById('loginText').innerHTML =`Invalid Email or Password.`;
+            }
+        }
+    })
+
+
+    
+    async function getAllEvents(){
+        try {
+            const querySnapShot = await getDocs(colRef);
+            querySnapShot.forEach((doc)=>{
+                const data = {id: doc.id, ...doc.data()}
+                allEvents.push(data);
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    function displayAllEvents(e) {
+        let displaySearch = document.querySelector('.displaySearch');
+        displaySearch.innerHTML = ''; 
+
+        e.forEach((event)=>{
+            displaySearch.innerHTML +=`
+            <div class="searchEventDiv">
+                <img src="${event.image}" alt="Image">
+                <br>
+                <h1>${event.title}</h1>
+                <br>
+                <p><strong>Location:</strong> ${event.location}</p>
+                <br>
+                <p><strong>Date:</strong> ${event.date}</p>
+                <br>
+                <p><strong>Time:</strong> ${event.time}</p>
+                <br>
+                <a href="./singleEvent.html?id=${event.id}">View More</a>
+            </div>
+            `
+        });
+    };
+
+    getAllEvents();
+    
+    const searchBtn = document.getElementById('searchBtn')
+    searchBtn.addEventListener('click', ()=>{
+        loginForm.style.display = 'none';
+        const searchEvent = document.getElementById('searchEvent').value.trim().toLowerCase();
+        const searchedEvents = allEvents.filter((event)=> event.title.toLowerCase().trim().includes(searchEvent));
+
+        if(searchedEvents.length > 0){
+            displayAllEvents(searchedEvents);
+        }else{
+            alert('nothing');
+        }
+    })
+</script>
+</html>
