@@ -111,6 +111,49 @@
         #navBooked{
             display: none;
         }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                margin-top: 16px;
+            }
+            #logOutBtn {
+                margin-top: 8px;
+                width: 100%;
+            }
+            .nav-item.d-flex {
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+            .eventDiv{
+                width: 47%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #searchEvent, #searchBtn, .nav-link, #logOutBtn {
+                font-size: 13px;
+            }
+            #searchEvent {
+                padding: 5px 8px;
+            }
+            #searchBtn {
+                padding: 4px 7px;
+            }
+            .navbar-brand.logo {
+                font-size: 24px;
+            }
+            .eventDiv{
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 3000px) {
+            #searchEvent, #searchBtn, .nav-link, #logOutBtn {
+                font-size: 1.75vw;
+            }
+            .navbar-brand.logo {
+                font-size: 2.25vw;
+            }
+        }
     </style>
 </head>
 
