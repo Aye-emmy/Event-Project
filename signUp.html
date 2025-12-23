@@ -133,12 +133,29 @@
             }
         }
 
-        @media (max-width: 3000px) {
+        @media (min-width: 1300px) {
             #searchEvent, #searchBtn, .nav-link, #logOutBtn {
                 font-size: 1.75vw;
             }
             .navbar-brand.logo {
                 font-size: 2.25vw;
+            }
+            .searchEventDiv p, a{
+                font-size: 1.5vw;
+            }
+            .searchEventDiv h1{
+                font-size: 3vw;
+            }
+            .signUp p, button{
+                font-size: 1.5vw;
+            }
+            .signUp h1{
+                font-size: 3vw;
+            }
+            .signUp input{
+                font-size: 1.5vw;
+                padding: 20px;
+                border-radius: 20px;
             }
         }
     </style>
@@ -215,11 +232,11 @@
             </div>
             <div class="mb-3">
                 <input type="text" class="form-control" name="image" placeholder="Profile Picture" required>
-                <div class="form-text text-success">Insert the picture's URL only. Example: <i>"http://bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg"</i></div>
+                <div class="form-text text-success"><p>Insert the picture's URL only. Example: <i>"http://bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg"</i></p></div>
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" name="checkbox">
-                <label class="form-check-label" for="exampleCheck1">Agree to Terms and Policy</label>
+                <label class="form-check-label" for="exampleCheck1"><p>Agree to Terms and Policy</p></label>
                 <div id="policyText" class="form-text text-danger"></div>
             </div>
             <button type="submit">Submit</button>
