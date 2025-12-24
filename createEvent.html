@@ -285,6 +285,7 @@
     const allUsers = [];
     const allEvents = [];
     const logOutBtn = document.getElementById('logOutBtn');
+    let currentUser = '';
 
     async function getAllUsers(){
         try {
@@ -306,6 +307,7 @@
     const userDisplay = document.querySelector('.userDisplay');
     const logo = document.querySelector('.logo');
     if (user && user.email) {
+        currentUser = user.uid;
         const userEmail = user.email.trim().toLowerCase();
         if (allUsers.length === 0) {
             await getAllUsers();
@@ -361,6 +363,7 @@
 
     async function createEvent() {
         let formData = {
+            user: currentUser,
             image: addEvent.image.value,
             title: addEvent.title.value,
             category: addEvent.category.value,
@@ -374,11 +377,15 @@
         };
 
         try {
-            const docRef = await addDoc(colRef, formData);
+            if(currentUser){
+                const docRef = await addDoc(colRef, formData);
 
-            alert('Event Created Successfully');
-            window.location.href = './index.html';
-            
+                alert('Event Created Successfully');
+                window.location.href = './index.html';
+            }else{
+                alert('Kindly Login to Create an Event');
+                window.location.href = './login.html';
+            }
         } catch (error) {
             console.log(error.message);
         }
