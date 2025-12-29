@@ -8,24 +8,27 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
     </style>
     <style>
-        *{
+        * {
             border: 0px;
             padding: 0px;
             box-sizing: border-box;
         }
-        body{
+
+        body {
             background-image: linear-gradient(to left, rgba(255, 51, 0), rgb(141, 50, 226));
             font-family: 'Times New Roman', Times, serif;
         }
-        .logo{
+
+        .logo {
             font-family: "Faster One", system-ui;
             letter-spacing: -5px;
             color: #87196b;
         }
-        #logOutBtn{
+
+        #logOutBtn {
             margin-left: 5px;
             padding: 5px 7px;
             border: 1px solid red;
@@ -34,19 +37,22 @@
             border-radius: 15px;
             display: none;
         }
-        .signUp{
+
+        .signUp {
             margin: 30px auto;
             padding: 10px;
             width: 70%;
-            border:1px solid rgb(207,226,255); 
+            border: 1px solid rgb(207, 226, 255);
             box-shadow: 0px 0px 15px aliceblue;
             border-radius: 15px;
         }
-        .signUp h1{
+
+        .signUp h1 {
             text-align: center;
             margin-bottom: 20px;
         }
-        .signUp button{
+
+        .signUp button {
             display: block;
             margin: 20px auto;
             padding: 5px 10px;
@@ -54,35 +60,42 @@
             border: 1px solid rgb(14, 95, 57);
             border-radius: 15px;
         }
-        .signUp button:hover{
+
+        .signUp button:hover {
             background-color: rgb(14, 95, 57);
             color: aliceblue;
         }
-        .displaySearch{
+
+        .displaySearch {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
             padding: 10px;
         }
-        .searchEventDiv{
-            padding:20px;
+
+        .searchEventDiv {
+            padding: 20px;
             margin: 10px;
             background-color: aliceblue;
-            border:1px solid aliceblue; 
+            border: 1px solid aliceblue;
             box-shadow: 0px 0px 15px aliceblue;
-            border-radius: 15px; 
+            border-radius: 15px;
             width: 45%;
         }
-        .searchEventDiv img{
+
+        .searchEventDiv img {
             width: 100%;
             border-radius: 5px;
             margin-bottom: 20px;
             box-shadow: 1px 1px 5px blueviolet;
         }
-        .searchEventDiv h1,p{
+
+        .searchEventDiv h1,
+        p {
             display: inline;
         }
-        .searchEventDiv a{
+
+        .searchEventDiv a {
             display: inline-block;
             margin: 10px auto;
             text-decoration: none;
@@ -91,68 +104,95 @@
             border-radius: 15px;
             padding: 5px 10px;
         }
-        .searchEventDiv a:hover{
+
+        .searchEventDiv a:hover {
             background-color: rgb(14, 95, 57);
             color: aliceblue;
         }
-        #navBooked{
+
+        #navBooked,
+        #navMyEvents {
             display: none;
         }
+
         @media (max-width: 991px) {
             .navbar-nav {
                 margin-top: 16px;
             }
+
             #logOutBtn {
                 margin-top: 8px;
                 width: 100%;
             }
+
             .nav-item.d-flex {
                 margin-top: 8px;
                 margin-bottom: 8px;
             }
-            .eventDiv{
+
+            .eventDiv {
                 width: 47%;
             }
         }
 
         @media (max-width: 576px) {
-            #searchEvent, #searchBtn, .nav-link, #logOutBtn {
+
+            #searchEvent,
+            #searchBtn,
+            .nav-link,
+            #logOutBtn {
                 font-size: 13px;
             }
+
             #searchEvent {
                 padding: 5px 8px;
             }
+
             #searchBtn {
                 padding: 4px 7px;
             }
+
             .navbar-brand.logo {
                 font-size: 24px;
             }
-            .eventDiv{
+
+            .eventDiv {
                 width: 90%;
             }
         }
 
         @media (min-width: 1300px) {
-            #searchEvent, #searchBtn, .nav-link, #logOutBtn {
+
+            #searchEvent,
+            #searchBtn,
+            .nav-link,
+            #logOutBtn {
                 font-size: 1.75vw;
             }
+
             .navbar-brand.logo {
                 font-size: 2.25vw;
             }
-            .searchEventDiv p, a{
+
+            .searchEventDiv p,
+            a {
                 font-size: 1.5vw;
             }
-            .searchEventDiv h1{
+
+            .searchEventDiv h1 {
                 font-size: 3vw;
             }
-            .signUp p, button{
+
+            .signUp p,
+            button {
                 font-size: 1.5vw;
             }
-            .signUp h1{
+
+            .signUp h1 {
                 font-size: 3vw;
             }
-            .signUp input{
+
+            .signUp input {
                 font-size: 1.5vw;
                 padding: 20px;
                 border-radius: 20px;
@@ -166,10 +206,11 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand logo" href="./index.html">AYEvents</a>
-                
+
                 <div class="userDisplay navbar-brand"></div>
-                
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo03">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -177,6 +218,9 @@
                     <ul class="navbar-nav me-auto mb-1 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" href="./index.html">Home</a>
+                        </li>
+                        <li class="nav-item" id="navMyEvents">
+                            <a class="nav-link" href="./myEvent.html">My Events</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./createEvent.html">Create Events</a>
@@ -186,7 +230,8 @@
                         </li>
 
                         <li class="nav-item d-flex flex-nowrap align-items-center mt-2 mt-lg-0 ms-lg-2">
-                            <input class="form-control me-2 w-auto flex-grow-1 flex-lg-grow-0" id="searchEvent" type="search" placeholder="Search Event" style="max-width: 200px;">
+                            <input class="form-control me-2 w-auto flex-grow-1 flex-lg-grow-0" id="searchEvent"
+                                type="search" placeholder="Search Event" style="max-width: 200px;">
                             <button class="btn btn-outline-success text-nowrap" id="searchBtn">Search</button>
                         </li>
                     </ul>
@@ -213,31 +258,37 @@
         <form class="container bg-primary-subtle p-5 signUp">
             <h1>Sign Up</h1>
             <div class="mb-3">
-                <input type="text" class="form-control" name="firstName" placeholder="First Name" >
+                <input type="text" class="form-control" name="firstName" placeholder="First Name">
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" name="lastName" placeholder="Last Name" >
+                <input type="text" class="form-control" name="lastName" placeholder="Last Name">
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" name="email" placeholder="Email Address" >
-                <div id="emailText" class="form-text text-danger"></div>
+                <input type="text" class="form-control" name="email" placeholder="Email Address">
+                <p id="emailText" class="form-text text-danger"></p>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" name="password" placeholder="Password" >
-                <div id="passwordText" class="form-text text-danger"></div>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+                <p id="passwordText" class="form-text text-danger"></p>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" >
-                <div id="confirmPasswordText" class="form-text text-danger"></div>
+                <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password">
+                <p id="confirmPasswordText" class="form-text text-danger"></p>
             </div>
             <div class="mb-3">
                 <input type="text" class="form-control" name="image" placeholder="Profile Picture" required>
-                <div class="form-text text-success"><p>Insert the picture's URL only. Example: <i>"http://bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg"</i></p></div>
+                <div class="form-text text-success">
+                    <p>Insert the picture's URL only. Example:
+                        <i>"http://bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg"</i>
+                    </p>
+                </div>
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" name="checkbox">
-                <label class="form-check-label" for="exampleCheck1"><p>Agree to Terms and Policy</p></label>
-                <div id="policyText" class="form-text text-danger"></div>
+                <label class="form-check-label" for="exampleCheck1">
+                    <p>Agree to Terms and Policy</p>
+                </label>
+                <p id="policyText" class="form-text text-danger"></p>
             </div>
             <button type="submit">Submit</button>
             <div class="form-text  mb-3">
@@ -251,10 +302,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
+
     // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getFirestore, collection, doc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getFirestore, collection, doc, getDocs, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -268,13 +321,14 @@
         messagingSenderId: "443114245102",
         appId: "1:443114245102:web:65474743165e222fb71cff",
         measurementId: "G-C3LMGJVXW2"
-    }; 
+    };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const db = getFirestore(app);
     const colRef = collection(db, 'events');
-    // const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
     const auth = getAuth(app);
     const allEvents = [];
     let emailReg = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -283,15 +337,14 @@
     let displaySearch = document.querySelector('.displaySearch');
     displaySearch.style.display = 'none';
 
-    
-    onAuthStateChanged(auth, (user) =>{
-        if(user && user.email){
+
+    onAuthStateChanged(auth, (user) => {
+        if (user && user.email) {
             console.log('User Currently Logged In');
-            window.location.href ='./index.html';
         }
     })
 
-    signUpForm.addEventListener('submit', async (e)=>{
+    signUpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         let firstName = signUpForm.firstName.value;
         let lastName = signUpForm.lastName.value;
@@ -299,52 +352,57 @@
         let password = signUpForm.password.value;
         let confirmPassword = signUpForm.confirmPassword.value;
         let image = signUpForm.image.value;
-        let checkBox = signUpForm.checkbox.checked? true : false ;
+        let checkBox = signUpForm.checkbox.checked ? true : false;
 
 
-        if (!emailReg.test(email)){
+        if (!emailReg.test(email)) {
             document.getElementById('emailText').innerHTML = `Email address should be in this format 'example12@gmail.com'.`;
+            return;
         }
-        if (!passwordReg.test(password)){
+        if (!passwordReg.test(password)) {
             document.getElementById('passwordText').innerHTML = 'Password must be 8 characters long contain at least a special character, a number, UPPER case and lower case letter.';
+            return;
         }
-        if (confirmPassword !== password){
+        if (confirmPassword !== password) {
             document.getElementById('confirmPasswordText').innerHTML = 'Confirm Password must be the same as the Password.';
+            return;
         }
         if (checkBox == false) {
             document.getElementById('policyText').innerHTML = `Kindly Agree to the Terms and Policies to continue.`;
             return;
         }
 
-        try {
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-            const userDocRef = doc(db, 'userDetails', userCredentials.user.uid);
-            const docSnapShot = await setDoc(userDocRef, {
-                userUid: userCredentials.user.uid,
-                firstname: firstName,
-                lastname: lastName,
-                email: email,
-                password: password,
-                image: image,
-                createdAt: new Date().toISOString()
-            });
-            await signOut(auth);
-            alert('Sign Up Successful');
-            window.location.href = './login.html';
 
-        } catch (error) {
-            console.log(error.message);
-            if(error.message === 'Firebase: Error (auth/email-already-in-use).'){
-                document.getElementById('emailText').innerHTML = `Email already exist, kindly sign up with a different email`;
-            }
+    try {
+        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = userCredentials.user.uid;
+        const userDocRef = doc(db, 'userDetails', uid);
+        await setDoc(userDocRef, {
+            userUid: uid,
+            firstname: firstName,
+            lastname: lastName,
+            email: email,
+            image: image,
+            createdAt: new Date().toISOString()
+        });
+        
+        await signOut(auth);
+        alert('Sign Up Successful');
+        window.location.href = './login.html';
+
+    } catch (error) {
+        console.log(error.message);
+        if(error.message === 'Firebase: Error (auth/email-already-in-use).'){
+            document.getElementById('emailText').innerHTML = `Email already exist, kindly sign up with a different email`;
         }
+    }
     })
 
-    async function getAllEvents(){
+    async function getAllEvents() {
         try {
             const querySnapShot = await getDocs(colRef);
-            querySnapShot.forEach((doc)=>{
-                const data = {id: doc.id, ...doc.data()}
+            querySnapShot.forEach((doc) => {
+                const data = { id: doc.id, ...doc.data() }
                 allEvents.push(data);
             });
         } catch (error) {
@@ -353,11 +411,11 @@
     };
 
     function displayAllEvents(e) {
-        
-        displaySearch.innerHTML = ''; 
 
-        e.forEach((event)=>{
-            displaySearch.innerHTML +=`
+        displaySearch.innerHTML = '';
+
+        e.forEach((event) => {
+            displaySearch.innerHTML += `
             <div class="searchEventDiv">
                 <img src="${event.image}" alt="Image">
                 <br>
@@ -376,17 +434,17 @@
     };
 
     getAllEvents();
-    
+
     const searchBtn = document.getElementById('searchBtn')
-    searchBtn.addEventListener('click', ()=>{
+    searchBtn.addEventListener('click', () => {
         signUpForm.style.display = 'none';
         displaySearch.style.display = 'block';
         const searchEvent = document.getElementById('searchEvent').value.trim().toLowerCase();
-        const searchedEvents = allEvents.filter((event)=> event.title.toLowerCase().trim().includes(searchEvent));
+        const searchedEvents = allEvents.filter((event) => event.title.toLowerCase().trim().includes(searchEvent));
 
-        if(searchedEvents.length > 0){
+        if (searchedEvents.length > 0) {
             displayAllEvents(searchedEvents);
-        }else{
+        } else {
             alert('nothing');
         }
     })

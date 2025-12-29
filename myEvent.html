@@ -75,7 +75,7 @@
             border-radius: 15px;
             display: none;
         }
-        #navBooked, #navMyEvents{
+        #navBooked{
             display: none;
         }
         @media (max-width: 991px) {
@@ -135,42 +135,6 @@
 </head>
 
 <body>
-    <!-- <header>
-        <nav class="navbar navbar-expand bg-body-tertiary sticky-top">
-            <div class="container-fluid d-flex">
-                <a class="navbar-brand logo" href="./index.html">AYEvents</a>
-                <div class="userDisplay"></div>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav me-auto mb-1 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="./index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./createEvent.html">Create Events</a>
-                        </li>
-                        <li class="nav-item" id="navBooked">
-                            <a class="nav-link" href="./bookedEvents.html">Booked Events</a>
-                        </li>
-                        <li class="nav-item d-flex">
-                            <input class="form-control me-2" id="searchEvent" type="search" placeholder="Search Event">
-                            <button class="btn btn-outline-success" id="searchBtn" >Search</button>
-                        </li>
-                    </ul>
-                <div class="d-flex">
-                    <ul class="navbar-nav me-auto mb-1 mb-lg-0">
-                        <li class="nav-item" >
-                            <a class="nav-link" id="navSignUp" href="./signUp.html">Sign Up</a>
-                        </li>
-                        <li class="nav-item" >
-                        <a class="nav-link" id="navSignIn" href="./login.html">Login</a>
-                        </li>
-                    </ul>
-                    <button id="logOutBtn" type="button">Log Out</button>
-                </div>
-                </div>
-            </div>
-        </nav>
-    </header>  -->
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
             <div class="container-fluid">
@@ -256,6 +220,7 @@
     const allEvents =[];
     const allUsers = [];
     const logOutBtn = document.getElementById('logOutBtn');
+    let currentUser = '';
 
 
 
@@ -280,12 +245,11 @@
     const navSignUp = document.getElementById('navSignUp');
     const navSignIn = document.getElementById('navSignIn');
     const navBooked = document.getElementById('navBooked');
-    const navMyEvents = document.getElementById('navMyEvents');
     const userDisplay = document.querySelector('.userDisplay');
     const logo = document.querySelector('.logo');
-    
-    
+
     if (user && user.email) {
+        currentUser = user.uid;
         const userEmail = user.email.trim().toLowerCase();
         if (allUsers.length === 0) {
             await getAllUsers();
@@ -304,14 +268,12 @@
             navSignIn.style.display = 'none';
             logo.style.display = 'none';
             navBooked.style.display = 'block';
-            navMyEvents.style.display = 'block';
         } else {
             console.warn("User is authenticated but not found in the 'users' collection.");
         }
     } else {
         logOutBtn.style.display = 'none';
         navBooked.style.display = 'none';
-        navMyEvents.style.display = 'none';
     }
 });
 
@@ -330,8 +292,6 @@
 
 
 
-
-
     async function getAllEvents(){
         try {
             const querySnapShot = await getDocs(colRef);
@@ -339,7 +299,13 @@
                 const data = {id: doc.id, ...doc.data()}
                 allEvents.push(data);
             });
-            displayAllEvents(allEvents);
+            const userEvent = allEvents.filter((event) => event.user === currentUser);
+            if(userEvent){
+                displayAllEvents(userEvent);
+            }else{
+                alert('User has not Created any Event');
+                window.location.href = './createEvent.html';
+            }
         } catch (error) {
             console.log(error.message);
         }

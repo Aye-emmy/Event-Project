@@ -108,7 +108,7 @@
             background-color: rgb(14, 95, 57);
             color: aliceblue;
         }
-        #navBooked{
+        #navBooked, #navMyEvents{
             display: none;
         }
         @media (max-width: 991px) {
@@ -192,6 +192,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="./index.html">Home</a>
                         </li>
+                        <li class="nav-item" id="navMyEvents">
+                            <a class="nav-link" href="./myEvent.html">My Events</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./createEvent.html">Create Events</a>
                         </li>
@@ -225,7 +228,7 @@
 
     <main class="mainBody">
         <form class="addEvent">
-            <h1>Create an Event</h1>
+            <h1 class="addEventh1">Create an Event</h1>
             <input type="text" name="image" placeholder="Image URL" required>
             <div class="form-text text-success"><p>Insert the picture's URL only. Example: <i>"http://bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg"</i></p></div>
             <br>
@@ -258,9 +261,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
     // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -286,6 +289,9 @@
     const allEvents = [];
     const logOutBtn = document.getElementById('logOutBtn');
     let currentUser = '';
+    const urlParams = new URLSearchParams(window.location.search.substring(1));
+    const eventId = urlParams.get('id');
+    let editDocRef = '';
 
     async function getAllUsers(){
         try {
@@ -304,6 +310,7 @@
     const navSignUp = document.getElementById('navSignUp');
     const navSignIn = document.getElementById('navSignIn');
     const navBooked = document.getElementById('navBooked');
+    const navMyEvents = document.getElementById('navMyEvents');
     const userDisplay = document.querySelector('.userDisplay');
     const logo = document.querySelector('.logo');
     if (user && user.email) {
@@ -326,12 +333,15 @@
             navSignIn.style.display = 'none';
             logo.style.display = 'none';
             navBooked.style.display = 'block';
+            navMyEvents.style.display = 'block';
+            
         } else {
             console.warn("User is authenticated but not found in the 'users' collection.");
         }
     } else {
         logOutBtn.style.display = 'none';
         navBooked.style.display = 'none';
+        navMyEvents.style.display = 'none';
     }
     });
 
@@ -348,7 +358,43 @@
         }
     })
 
+    function displayEditEvent(){
+        if(!eventId){
+            return;
+        }
+        editDocRef = doc(db, 'events', eventId);
+        if (editDocRef){
+            getEditableEvent();
+        }
+    }
 
+    displayEditEvent();
+    async function getEditableEvent(){
+        try {
+            if(editDocRef){
+                const docSnapShot = await getDoc(editDocRef);
+                const data = docSnapShot.data();
+                const preEvent = {id: docSnapShot.id, ...data}; 
+                document.querySelector('.addEventh1').textContent = 'Edit Event';
+
+                addEvent.image.value = preEvent.image || '';
+                addEvent.title.value = preEvent.title || '';
+                addEvent.category.value = preEvent.category || '';
+                addEvent.location.value = preEvent.location || '';
+                addEvent.date.value = preEvent.date || '';
+                addEvent.time.value = preEvent.time || '';
+                addEvent.organizer.value = preEvent.organizer || '';
+                addEvent.capacity.value = preEvent.capacity || '';
+                addEvent.price.value = preEvent.price || '';
+                addEvent.description.value = preEvent.description || '';
+            }else{
+                console.log('No Editable Event');
+            }
+        } catch (error) {
+            console.log(error.message);
+            
+        }
+    };
 
 
 
@@ -357,8 +403,12 @@
 
     addEvent.addEventListener('submit', async(event)=>{
         event.preventDefault();
-        createEvent();
         
+        if(editDocRef){
+            saveEditedEvent();
+        }else{
+            createEvent();
+        }
     });
 
     async function createEvent() {
@@ -391,6 +441,43 @@
         }
     };
     
+
+    async function saveEditedEvent() {
+        let editFormData = {
+            user: currentUser,
+            image: addEvent.image.value,
+            title: addEvent.title.value,
+            category: addEvent.category.value,
+            location: addEvent.location.value,
+            date: addEvent.date.value,
+            time: addEvent.time.value,
+            organizer: addEvent.organizer.value,
+            capacity: addEvent.capacity.value,
+            price: addEvent.price.value,
+            description: addEvent.description.value,
+            lastUpdated: new Date().toISOString(),
+        };
+
+        try {
+            await updateDoc(editDocRef, editFormData);
+            alert('Event Update Successful');
+            window.location.href = './index.html';
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+
+
+    
+
+
+
+
+
+
+
+
     async function getAllEvents(){
         try {
             const querySnapShot = await getDocs(colRef);

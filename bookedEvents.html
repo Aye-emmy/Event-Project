@@ -176,6 +176,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="./index.html">Home</a>
                         </li>
+                        <li class="nav-item" id="navMyEvents">
+                            <a class="nav-link" href="./myEvent.html">My Events</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./createEvent.html">Create Events</a>
                         </li>
@@ -232,9 +235,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
     // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -285,7 +288,7 @@
     onAuthStateChanged(auth, async (user) => {
     const navSignUp = document.getElementById('navSignUp');
     const navSignIn = document.getElementById('navSignIn');
-    const navBooked = document.getElementById('navBooked');
+    const navMyEvents = document.getElementById('navMyEvents');
     const userDisplay = document.querySelector('.userDisplay');
     const logo = document.querySelector('.logo');
 
@@ -308,13 +311,13 @@
             navSignUp.style.display = 'none';
             navSignIn.style.display = 'none';
             logo.style.display = 'none';
-            navBooked.style.display = 'block';
+            navMyEvents.style.display = 'block';
         } else {
             console.warn("User is authenticated but not found in the 'users' collection.");
         }
     } else {
         logOutBtn.style.display = 'none';
-        navBooked.style.display = 'none';
+        navMyEvents.style.display = 'none';
     }
 });
 
